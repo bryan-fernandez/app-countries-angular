@@ -1,0 +1,80 @@
+<header class="header">
+    <h1>Países</h1>
+</header>
+
+<section class="main-container">
+
+    <article class="main-container-header">
+
+        <span>Total de Países ({{countries.length}})</span>
+
+        <form class="search-form" [formGroup]="searchForm" (ngSubmit)="search()">
+
+            <div class="search-select">
+                <!-- <label for="select">Por:</label> -->
+
+                <div class="search-select-container">
+
+                    <label for="select">Por:</label>
+
+                    <select id="select" class="select" formControlName="by">
+                        <option value="0">Selecciona una opción</option>
+                        <option value="1">País</option>
+                        <option value="2">Capital</option>
+                        <option value="3">Continente</option>
+                    </select>
+
+                </div>
+
+                <span class="error-input" *ngIf="searchForm.controls['by'].hasError('pattern') && submitted">
+                    *Este campo es requerido*
+                </span>
+
+            </div>
+
+            <div class="search-input">
+                <div class="search-input-container">
+
+                    <label for="search">Buscar:</label>
+                    <input type="text" class="input" id="search" placeholder="País, Capital o Continente"
+                        formControlName="search" />
+
+                </div>
+
+                <span class="error-input" *ngIf="searchForm.controls['search'].hasError('required') && submitted">
+                    *Este campo es requerido*
+                </span>
+            </div>
+
+            <button type="submit" class="btn-search">Buscar</button>
+
+        </form>
+
+    </article>
+
+    <article class="main-container-body">
+
+        <div *ngIf="!loading" class="spinner">
+
+            <div class="lds-dual-ring"></div>
+
+        </div>
+
+        <ng-container *ngIf="loading">
+            <div class="card" *ngFor="let country of countries">
+                <div class="card-header">
+                    <img [ngSrc]="country.flags.png" [alt]="country.flags.alt" fill>
+                </div>
+
+                <div class="card-body">
+                    <p class="name-country">Name: {{country.name.common}}</p>
+                    <p>Capital: {{!country.capital === undefined ? country.capital[0]: "Unknown"}}</p>
+                    <p>Region: {{country.region}}</p>
+                </div>
+
+            </div>
+        </ng-container>
+
+    </article>
+
+</section>
